@@ -1,0 +1,25 @@
+require:
+  - rubocop-performance
+
+inherit_gem:
+  rubocop-shopify: rubocop.yml
+
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 3.0
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  SuggestExtensions: false
+  NewCops: enable
+  Exclude:
+    - 'vendor/bundle/**/*'
+
+Layout/LineLength:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  Enabled: false
