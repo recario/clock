@@ -21,7 +21,7 @@ module Clockwork
       Sidekiq::Client.push(
         'class' => 'EffectiveAdsRefreshMaterializedView',
         'args' => [],
-        'queue' => 'default',
+        'queue' => 'refresh-matviews',
         'retry' => true,
         'backtrace' => false,
       )
@@ -33,7 +33,7 @@ module Clockwork
       Sidekiq::Client.push(
         'class' => 'BudgetWidgetRefreshMaterializedView',
         'args' => [],
-        'queue' => 'default',
+        'queue' => 'refresh-matviews',
         'retry' => true,
         'backtrace' => false,
       )
@@ -45,7 +45,7 @@ module Clockwork
       Sidekiq::Client.push(
         'class' => 'EffectiveUserContactsRefreshMaterializedView',
         'args' => [],
-        'queue' => 'default',
+        'queue' => 'refresh-matviews',
         'retry' => true,
         'backtrace' => false,
       )
@@ -57,7 +57,7 @@ module Clockwork
       Sidekiq::Client.push(
         'class' => 'ProviderActualizeRequest',
         'args' => [],
-        'queue' => 'default',
+        'queue' => 'provider-actualize',
         'retry' => true,
         'backtrace' => false,
       )
@@ -93,7 +93,7 @@ module Clockwork
       Sidekiq::Client.push(
         'class' => 'BackupDatabase',
         'args' => [],
-        'queue' => 'default',
+        'queue' => 'system',
         'retry' => true,
         'backtrace' => false,
       )
@@ -105,7 +105,7 @@ module Clockwork
       Sidekiq::Client.push(
         'class' => 'VacuumDatabase',
         'args' => [],
-        'queue' => 'default',
+        'queue' => 'system',
         'retry' => true,
         'backtrace' => false,
       )
@@ -117,7 +117,7 @@ module Clockwork
       Sidekiq::Client.push(
         'class' => 'SnapshotUserDevices',
         'args' => [],
-        'queue' => 'default',
+        'queue' => 'analytics',
         'retry' => true,
         'backtrace' => false,
       )
