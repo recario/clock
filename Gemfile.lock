@@ -14,6 +14,7 @@ GEM
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     dotenv (2.7.6)
+    foreman (0.87.2)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     minitest (5.14.4)
@@ -58,6 +59,7 @@ DEPENDENCIES
   activesupport
   clockwork
   dotenv
+  foreman
   rubocop
   rubocop-performance
   rubocop-shopify
