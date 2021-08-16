@@ -5,13 +5,17 @@ require 'active_support'
 require 'active_support/core_ext/integer/time'
 require 'active_support/core_ext/object/blank'
 
+redis_url = "redis://#{ENV.fetch('REDIS_SERVICE_HOST', 'localhost')}:#{ENV.fetch('REDIS_SERVICE_PORT', 6379)}"
+
 Sidekiq.configure_server do |config|
-  config.redis = { url: "redis://#{ENV.fetch('REDIS_SERVICE_HOST', 'localhost')}:#{ENV.fetch('REDIS_SERVICE_PORT', 6379)}" }
+  config.redis = { url: redis_url }
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: "redis://#{ENV.fetch('REDIS_SERVICE_HOST', 'localhost')}:#{ENV.fetch('REDIS_SERVICE_PORT', 6379)}" }
+  config.redis = { url: redis_url }
 end
+
+REDIS = Redis.new(url: redis_url)
 
 module Clockwork
   ### SERVER ###
