@@ -32,6 +32,18 @@ module Clockwork
     end
   end
 
+  if ENV['ENABLED_REFRESH_DB_STATS'].present?
+    every(ENV.fetch('INTERVAL_REFRESH_DB_STATS_SEC', 300).to_i.seconds, 'Update Dashboard Stats', skip_first_run: true) do
+      Sidekiq::Client.push(
+        'class' => 'DashboardStatsRefreshMaterializedView',
+        'args' => [],
+        'queue' => 'refresh-matviews',
+        'retry' => true,
+        'backtrace' => false,
+      )
+    end
+  end
+
   if ENV['ENABLED_REFRESH_MV_BW'].present?
     every(ENV.fetch('INTERVAL_REFRESH_MV_BW_HOUR', 1).to_i.hour, 'Refresh Budget Widget Materialized View', skip_first_run: true) do
       Sidekiq::Client.push(
