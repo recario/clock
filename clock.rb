@@ -177,4 +177,40 @@ module Clockwork
       )
     end
   end
+
+  if ENV['ENABLED_REFRESH_MV_BPN'].present?
+    every(ENV.fetch('INTERVAL_REFRESH_MV_BPN_DAY', 1).to_i.days, 'Refresh Business Phone Numbers Materialized View', skip_first_run: true) do
+      Sidekiq::Client.push(
+        'class' => 'BusinessPhoneNumbersRefreshMaterializedView',
+        'args' => [],
+        'queue' => 'refresh-matviews',
+        'retry' => true,
+        'backtrace' => false,
+      )
+    end
+  end
+
+  if ENV['ENABLED_SNAPSHOT_SYS'].present?
+    every(ENV.fetch('INTERVAL_SNAPSHOT_SYS_DAYS', 1).to_i.days, 'Snapshot Dashboard Stats', skip_first_run: true) do
+      Sidekiq::Client.push(
+        'class' => 'SnapshotSystemStats',
+        'args' => [],
+        'queue' => 'default',
+        'retry' => false,
+        'backtrace' => false,
+      )
+    end
+  end
+
+  if ENV['ENABLED_SNAPSHOT_USER_VISIBILITY'].present?
+    every(ENV.fetch('INTERVAL_SNAPSHOT_USER_VISIBILITY_HOURS', 24).to_i.hours, 'Snapshot User Visibility', skip_first_run: true) do
+      Sidekiq::Client.push(
+        'class' => 'SnapshotUserVisibility',
+        'args' => [],
+        'queue' => 'default',
+        'retry' => false,
+        'backtrace' => false,
+      )
+    end
+  end
 end
