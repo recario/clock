@@ -203,7 +203,7 @@ module Clockwork
   end
 
   if ENV['ENABLED_SNAPSHOT_USER_VISIBILITY'].present?
-    every(ENV.fetch('INTERVAL_SNAPSHOT_USER_VISIBILITY_HOURS', 24).to_i.hours, 'Snapshot User Visibility', skip_first_run: true) do
+    every(ENV.fetch('INTERVAL_SNAPSHOT_USER_VISIBILITY_SEC', 300).to_i.seconds, 'Snapshot User Visibility', skip_first_run: true) do
       Sidekiq::Client.push(
         'class' => 'SnapshotUserVisibility',
         'args' => [],
