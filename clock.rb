@@ -81,7 +81,7 @@ module Clockwork
   end
 
   if ENV['ENABLED_MARK_DELETED_ADS'].present?
-    every(ENV.fetch('INTERVAL_MARK_DELETED_ADS_DAY', 1).to_i.day, 'Mark old ads as deleted', at: '04:00', tz: 'UTC', skip_first_run: true) do
+    every(ENV.fetch('INTERVAL_MARK_DELETED_ADS_DAY', 1).to_i.day, 'Mark old ads as deleted', at: '05:00', tz: 'UTC', skip_first_run: true) do
       Sidekiq::Client.push(
         'class' => 'MarkOldAdsAsDeleted',
         'args' => [],
@@ -117,7 +117,7 @@ module Clockwork
   end
 
   if ENV['ENABLED_VACUUM'].present?
-    every(ENV.fetch('INTERVAL_VACUUM_DAY', 1).to_i.day, 'Vacuum Postgresql', at: '05:00', tz: 'UTC', skip_first_run: true) do
+    every(ENV.fetch('INTERVAL_VACUUM_DAY', 1).to_i.day, 'Vacuum Postgresql', at: '04:00', tz: 'UTC', skip_first_run: true) do
       Sidekiq::Client.push(
         'class' => 'VacuumDatabase',
         'args' => [],
