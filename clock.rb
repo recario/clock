@@ -32,6 +32,18 @@ module Clockwork
     end
   end
 
+  if ENV['ENABLED_REFRESH_MV_KA'].present?
+    every(ENV.fetch('INTERVAL_REFRESH_MV_KA_SEC', 5).to_i.seconds, 'Refresh Known Ads Materialized View', skip_first_run: true) do
+      Sidekiq::Client.push(
+        'class' => 'KnownAdsRefreshMaterializedView',
+        'args' => [],
+        'queue' => 'refresh-matviews',
+        'retry' => true,
+        'backtrace' => false,
+      )
+    end
+  end
+
   if ENV['ENABLED_REFRESH_DB_STATS'].present?
     every(ENV.fetch('INTERVAL_REFRESH_DB_STATS_SEC', 300).to_i.seconds, 'Update Dashboard Stats', skip_first_run: true) do
       Sidekiq::Client.push(
