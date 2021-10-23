@@ -68,18 +68,6 @@ module Clockwork
     end
   end
 
-  if ENV['ENABLED_REFRESH_MV_EUC'].present?
-    every(ENV.fetch('INTERVAL_REFRESH_MV_EUC_SEC', 1).to_i.seconds, 'Refresh Effective UserContacts Materialized View', skip_first_run: true) do
-      Sidekiq::Client.push(
-        'class' => 'EffectiveUserContactsRefreshMaterializedView',
-        'args' => [],
-        'queue' => 'refresh-matviews',
-        'retry' => true,
-        'backtrace' => false,
-      )
-    end
-  end
-
   if ENV['ENABLED_REQUEST_ACTUALIZE'].present?
     every(ENV.fetch('INTERVAL_REQUEST_ACTUALIZE_SEC', 60).to_i.seconds, 'Request Provider to Actualize Ads', skip_first_run: true) do
       Sidekiq::Client.push(
