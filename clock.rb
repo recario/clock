@@ -26,6 +26,8 @@ module Clockwork
 
   if ENV['ENABLED_REFRESH_MV_EA'].present?
     every(ENV.fetch('INTERVAL_REFRESH_MV_EA_SEC', 1).to_i.seconds, 'Refresh Effective Ads Materialized View', skip_first_run: true) do
+      return if Sidekiq::Queue.new('refresh-matviews').any? { |j| j['class'] == 'EffectiveAdsRefreshMaterializedView' }
+
       Sidekiq::Client.push(
         'class' => 'EffectiveAdsRefreshMaterializedView',
         'args' => [],
@@ -38,6 +40,8 @@ module Clockwork
 
   if ENV['ENABLED_REFRESH_MV_KA'].present?
     every(ENV.fetch('INTERVAL_REFRESH_MV_KA_SEC', 5).to_i.seconds, 'Refresh Known Ads Materialized View', skip_first_run: true) do
+      return if Sidekiq::Queue.new('refresh-matviews').any? { |j| j['class'] == 'KnownAdsRefreshMaterializedView' }
+
       Sidekiq::Client.push(
         'class' => 'KnownAdsRefreshMaterializedView',
         'args' => [],
@@ -50,6 +54,8 @@ module Clockwork
 
   if ENV['ENABLED_REFRESH_DB_STATS'].present?
     every(ENV.fetch('INTERVAL_REFRESH_DB_STATS_SEC', 300).to_i.seconds, 'Update Dashboard Stats', skip_first_run: true) do
+      return if Sidekiq::Queue.new('refresh-matviews').any? { |j| j['class'] == 'DashboardStatsRefreshMaterializedView' }
+
       Sidekiq::Client.push(
         'class' => 'DashboardStatsRefreshMaterializedView',
         'args' => [],
@@ -62,6 +68,8 @@ module Clockwork
 
   if ENV['ENABLED_REFRESH_MV_BW'].present?
     every(ENV.fetch('INTERVAL_REFRESH_MV_BW_HOUR', 1).to_i.hour, 'Refresh Budget Widget Materialized View', skip_first_run: true) do
+      return if Sidekiq::Queue.new('refresh-matviews').any? { |j| j['class'] == 'BudgetWidgetRefreshMaterializedView' }
+
       Sidekiq::Client.push(
         'class' => 'BudgetWidgetRefreshMaterializedView',
         'args' => [],
@@ -184,6 +192,8 @@ module Clockwork
 
   if ENV['ENABLED_REFRESH_MV_BPN'].present?
     every(ENV.fetch('INTERVAL_REFRESH_MV_BPN_DAY', 1).to_i.days, 'Refresh Business Phone Numbers Materialized View', skip_first_run: true) do
+      return if Sidekiq::Queue.new('refresh-matviews').any? { |j| j['class'] == 'BusinessPhoneNumbersRefreshMaterializedView' }
+
       Sidekiq::Client.push(
         'class' => 'BusinessPhoneNumbersRefreshMaterializedView',
         'args' => [],
